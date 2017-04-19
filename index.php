@@ -3,7 +3,7 @@
 Plugin Name: MF Maps
 Plugin URI: https://github.com/frostkom/mf_maps
 Description: 
-Version: 2.2.4
+Version: 2.2.5
 Author: Martin Fors
 Author URI: http://martinfors.se
 

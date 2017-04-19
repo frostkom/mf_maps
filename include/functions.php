@@ -4,9 +4,9 @@ function init_maps()
 {
 	$setting_gmaps_api = get_option('setting_gmaps_api');
 
-	wp_enqueue_style('style_maps', plugin_dir_url(__FILE__)."style.css");
+	mf_enqueue_style('style_maps', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
 	mf_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?key=".$setting_gmaps_api."&v=3.exp&libraries=places");
-	mf_enqueue_script('script_maps', plugin_dir_url(__FILE__)."script.js", array('here_i_am' => __("Here I am", 'lang_maps'), 'plugins_url' => plugins_url()));
+	mf_enqueue_script('script_maps', plugin_dir_url(__FILE__)."script.js", array('here_i_am' => __("Here I am", 'lang_maps'), 'plugins_url' => plugins_url()), get_plugin_version(__FILE__));
 }
 
 function get_map($data)
