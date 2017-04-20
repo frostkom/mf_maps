@@ -50,7 +50,7 @@ if(!function_exists('setting_gmaps_api_callback'))
 
 		$description = ($option == '' ? "<a href='//developers.google.com/maps/documentation/javascript/get-api-key' rel='external'>".__("Get yours here", 'lang_maps')."</a>" : "");
 
-		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'xtra' => "class='widefat'", 'description' => $description));
+		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'description' => $description));
 	}
 }
 

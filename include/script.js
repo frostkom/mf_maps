@@ -212,6 +212,12 @@ jQuery(function($)
 
 	$(document).on('click', '.toggler', function()
 	{
-		$(this).next('.toggle_container').find('.maps_search_container').gmaps();
+		var toggler_rel = $(this).attr('rel'),
+			toggle_container = $('.toggle_container[rel=' + toggler_rel + ']');
+
+		if(toggle_container.length > 0)
+		{
+			toggle_container.find('.maps_search_container').gmaps();
+		}
 	});
 });
