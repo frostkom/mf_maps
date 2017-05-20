@@ -121,7 +121,7 @@ jQuery.fn.gmaps = function(o)
 			{
 				var position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-				add_marker({'pos': position, 'icon': script_maps.plugins_url + '/mf_maps/images/regroup.png'}); //, 'name': script_maps.here_i_am
+				add_marker({'pos': position, 'icon': script_maps.plugins_url + '/mf_maps/images/regroup.png'}); /*, 'name': script_maps.here_i_am */
 
 				map.setCenter(position);
 				map.setZoom(zoom_default);
@@ -142,7 +142,7 @@ jQuery.fn.gmaps = function(o)
 				marker.setMap(null);
 			}
 
-			// For each place, get the icon, place name, and location.
+			/* For each place, get the icon, place name, and location */
 			var bounds = new google.maps.LatLngBounds();
 
 			for(var i = 0, place; place = places[i]; i++)
@@ -162,7 +162,7 @@ jQuery.fn.gmaps = function(o)
 		}
 	}
 
-	if(search_input_obj.is(':visible') && search_input_obj.length > 0) // && map_initiated == false
+	if(search_input_obj.is(':visible') && search_input_obj.length > 0) /* && map_initiated == false */
 	{
 		var has_maps = (search_map_obj.length > 0 ? true : false),
 			markers = [],
@@ -185,7 +185,7 @@ jQuery.fn.gmaps = function(o)
 
 			set_initial_marker();
 
-			// Bias the SearchBox results towards places that are within the bounds of the current map's viewport
+			/* Bias the SearchBox results towards places that are within the bounds of the current map's viewport */
 			google.maps.event.addListener(map, 'bounds_changed', function()
 			{
 				var bounds = map.getBounds();
