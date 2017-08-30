@@ -8,7 +8,8 @@ function init_maps()
 	$setting_gmaps_api = get_option('setting_gmaps_api');
 
 	mf_enqueue_style('style_maps', $plugin_include_url."style.css", $plugin_version);
-	wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?key=".$setting_gmaps_api."&v=3.exp&libraries=places", array('jquery'), $plugin_version, true);
+	//wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, array('jquery'), null, true);
+	mf_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, $plugin_version);
 	mf_enqueue_script('script_maps', $plugin_include_url."script.js", array('here_i_am' => __("Here I am", 'lang_maps'), 'plugins_url' => plugins_url()), $plugin_version);
 }
 
