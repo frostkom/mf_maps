@@ -15,10 +15,11 @@ function init_maps()
 
 function get_map($data)
 {
+	if(!isset($data['id'])){		$data['id'] = mt_rand(1, 100);}
 	if(!isset($data['input'])){		$data['input'] = "";}
 	if(!isset($data['coords'])){	$data['coords'] = "";}
 
-	return "<div class='maps_search_container'>"
+	return "<div id='maps_search_container_".$data['id']."' class='maps_search_container'>"
 		.show_textfield(array('name' => 'maps_search_input', 'value' => $data['input'], 'placeholder' => __("Search for your location", 'lang_maps'), 'xtra' => "class='maps_search_input'"))
 		."<div class='maps_search_map'></div>"
 		.input_hidden(array('name' => 'maps_search_coords', 'value' => $data['coords'], 'xtra' => "class='maps_search_coords'"))
@@ -75,7 +76,7 @@ function show_search_maps($user)
 		<tr>
 			<th><label for='profile_coords'>".__("City", 'lang_maps')."</label></th>
 			<td>"
-				.get_map(array('input' => $profile_search_input, 'coords' => $profile_search_coords))
+				.get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
 			."</td>
 		</tr>
 	</table>";

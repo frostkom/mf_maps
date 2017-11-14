@@ -6,7 +6,7 @@ function on_load_maps()
 	{
 		var dom_obj = jQuery(this);
 
-		dom_obj.attr({'id': 'maps_search_container_' + i}).gmaps();
+		dom_obj.gmaps(); /*.attr({'id': 'maps_search_container_' + i})*/
 
 		i++;
 	});
