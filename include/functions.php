@@ -116,7 +116,7 @@ function setting_maps_default_position_callback()
 	$setting_key = get_setting_key(__FUNCTION__);
 	$option = get_option($setting_key, '(55.6133308, 12.976285800000028)');
 
-	echo get_map(array('id' => $user->ID, 'input' => '', 'coords_name' => $setting_key, 'coords' => $option));
+	echo get_map(array('input' => '', 'coords_name' => $setting_key, 'coords' => $option));
 }
 
 function setting_profile_map_callback()
