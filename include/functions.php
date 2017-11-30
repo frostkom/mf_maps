@@ -6,23 +6,35 @@ function init_maps()
 	$plugin_version = get_plugin_version(__FILE__);
 
 	$setting_gmaps_api = get_option('setting_gmaps_api');
+	$setting_maps_type = get_option_or_default('setting_maps_type', 'roadmap');
+	$setting_maps_controls = get_option_or_default('setting_maps_controls', array('search', 'fullscreen', 'zoom'));
+	$setting_maps_default_position = get_option_or_default('setting_maps_default_position', "(55.6133308, 12.976285800000028)");
 
-	mf_enqueue_style('style_maps', $plugin_include_url."style.css", $plugin_version);
+	mf_enqueue_style('style_maps', $plugin_include_url."style.php", $plugin_version);
 	//wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, array('jquery'), null, true);
 	mf_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, $plugin_version);
-	mf_enqueue_script('script_maps', $plugin_include_url."script.js", array('here_i_am' => __("Here I am", 'lang_maps'), 'plugins_url' => plugins_url()), $plugin_version);
+	mf_enqueue_script('script_maps', $plugin_include_url."script.js", array(
+		'type' => $setting_maps_type,
+		'display_street_view' => in_array('street_view', $setting_maps_controls),
+		'display_zoom' => in_array('zoom', $setting_maps_controls),
+		'display_scale' => in_array('scale', $setting_maps_controls),
+		'default_position' => $setting_maps_default_position,
+		'here_i_am' => __("Here I am", 'lang_maps'),
+		'plugins_url' => plugins_url()
+	), $plugin_version);
 }
 
 function get_map($data)
 {
-	if(!isset($data['id'])){		$data['id'] = mt_rand(1, 100);}
-	if(!isset($data['input'])){		$data['input'] = "";}
-	if(!isset($data['coords'])){	$data['coords'] = "";}
+	if(!isset($data['id'])){			$data['id'] = mt_rand(1, 100);}
+	if(!isset($data['input'])){			$data['input'] = "";}
+	if(!isset($data['coords_name'])){	$data['coords_name'] = 'maps_search_coords';}
+	if(!isset($data['coords'])){		$data['coords'] = "";}
 
 	return "<div id='maps_search_container_".$data['id']."' class='maps_search_container'>"
-		.show_textfield(array('name' => 'maps_search_input', 'value' => $data['input'], 'placeholder' => __("Search for your location", 'lang_maps'), 'xtra' => "class='maps_search_input'"))
+		.show_textfield(array('name' => 'maps_search_input', 'value' => $data['input'], 'placeholder' => __("Search for an address and find its position", 'lang_maps'), 'xtra' => "class='maps_search_input'"))
 		."<div class='maps_search_map'></div>"
-		.input_hidden(array('name' => 'maps_search_coords', 'value' => $data['coords'], 'xtra' => "class='maps_search_coords'"))
+		.input_hidden(array('name' => $data['coords_name'], 'value' => $data['coords'], 'xtra' => "class='maps_search_coords'"))
 	."</div>";
 }
 
@@ -34,7 +46,10 @@ function settings_maps()
 
 	$arr_settings = array();
 	$arr_settings['setting_gmaps_api'] = __("API Key", 'lang_maps');
-	$arr_settings['setting_profile_map'] = __("Show Map in Profile", 'lang_maps');
+	$arr_settings['setting_maps_type'] = __("Design", 'lang_maps');
+	$arr_settings['setting_maps_controls'] = __("Display Controls", 'lang_maps');
+	$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
+	$arr_settings['setting_profile_map'] = __("Display Map in Profile", 'lang_maps');
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
 }
@@ -57,6 +72,47 @@ if(!function_exists('setting_gmaps_api_callback'))
 
 		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'suffix' => $suffix));
 	}
+}
+
+function setting_maps_type_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key);
+
+	$arr_data = array(
+		'' => "-- ".__("Choose here", 'lang_maps')." --",
+		'roadmap' => __("Roadmap", 'lang_maps'),
+		'satellite' => __("Satellite", 'lang_maps'),
+		'hybrid' => __("Hybrid", 'lang_maps'),
+		'terrain' => __("Terrain", 'lang_maps'),
+		'custom' => __("Custom", 'lang_maps'),
+	);
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option));
+}
+
+function setting_maps_controls_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key);
+
+	$arr_data = array(
+		'search' => __("Search", 'lang_maps'),
+		'fullscreen' => __("Fullscreen", 'lang_maps'),
+		'street_view' => __("Street View", 'lang_maps'),
+		'zoom' => __("Zoom", 'lang_maps'),
+		'scale' => __("Scale", 'lang_maps'),
+	);
+
+	echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
+}
+
+function setting_maps_default_position_callback()
+{
+	$setting_key = get_setting_key(__FUNCTION__);
+	$option = get_option($setting_key, '(55.6133308, 12.976285800000028)');
+
+	echo get_map(array('id' => $user->ID, 'input' => '', 'coords_name' => $setting_key, 'coords' => $option));
 }
 
 function setting_profile_map_callback()

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-22 10:55+0100\n"
+"POT-Creation-Date: 2017-11-30 11:37+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -16,31 +16,87 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../include/functions.php:9
+#: ../include/functions.php:22
 msgid "Here I am"
 msgstr "Här är jag"
 
-#: ../include/functions.php:18
-msgid "Search for your location"
-msgstr "Skriv in din adress så att dina kunder kan hitta dig lättare"
+#: ../include/functions.php:35
+msgid "Search for an address and find its position"
+msgstr "Sök efter en adress och hitta dess position"
 
-#: ../include/functions.php:31
+#: ../include/functions.php:48
 msgid "API Key"
 msgstr "API-nyckel"
 
-#: ../include/functions.php:32
-msgid "Show Map in Profile"
+#: ../include/functions.php:49
+msgid "Design"
+msgstr "Utseende"
+
+#: ../include/functions.php:50
+msgid "Display Controls"
+msgstr "Visa kontroller"
+
+#: ../include/functions.php:51
+msgid "Default Position"
+msgstr "Standardposition"
+
+#: ../include/functions.php:52
+msgid "Display Map in Profile"
 msgstr "Visa karta i profilen"
 
-#: ../include/functions.php:41
+#: ../include/functions.php:61
 msgid "Maps"
 msgstr "Karta"
 
-#: ../include/functions.php:51
+#: ../include/functions.php:71
 msgid "Get yours here"
 msgstr "Hämta din här"
 
-#: ../include/functions.php:72
+#: ../include/functions.php:83
+msgid "Choose here"
+msgstr "Välj här"
+
+#: ../include/functions.php:84
+msgid "Roadmap"
+msgstr "Gator"
+
+#: ../include/functions.php:85
+msgid "Satellite"
+msgstr "Satellit"
+
+#: ../include/functions.php:86
+msgid "Hybrid"
+msgstr "Hybrid"
+
+#: ../include/functions.php:87
+msgid "Terrain"
+msgstr "Terräng"
+
+#: ../include/functions.php:88
+msgid "Custom"
+msgstr "Anpassad"
+
+#: ../include/functions.php:100
+msgid "Search"
+msgstr "Sök"
+
+#: ../include/functions.php:101
+msgid "Fullscreen"
+msgstr "Fullskärm"
+
+#: ../include/functions.php:102
+msgid "Street View"
+msgstr "Gatuvy"
+
+#: ../include/functions.php:103
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../include/functions.php:104
+msgid "Scale"
+msgstr "Skala"
+
+#: ../include/functions.php:133
 msgid "City"
 msgstr "Din adress"
 

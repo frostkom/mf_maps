@@ -6,7 +6,7 @@ function on_load_maps()
 	{
 		var dom_obj = jQuery(this);
 
-		dom_obj.gmaps(); /*.attr({'id': 'maps_search_container_' + i})*/
+		dom_obj.gmaps();
 
 		i++;
 	});
@@ -20,9 +20,9 @@ jQuery.fn.gmaps = function(o)
 	var dom_obj = this,
 		dom_id = dom_obj.attr('id'),
 		search_input_class = "maps_search_input",
-		search_input_obj = dom_obj.find('.maps_search_input'),
+		search_input_obj = dom_obj.find('.' + search_input_class),
 		search_map_class = "maps_search_map",
-		search_map_obj = dom_obj.find('.maps_search_map'),
+		search_map_obj = dom_obj.find('.' + search_map_class),
 		search_coords_obj = dom_obj.find('.maps_search_coords');
 
 	function add_marker(data)
@@ -65,9 +65,14 @@ jQuery.fn.gmaps = function(o)
 		markers.push(marker);
 	}
 
+	function get_coords_from_string(string)
+	{
+		return string.replace("(", "").replace(")", "").split(", ");
+	}
+
 	function get_position_from_string(string)
 	{
-		var coords = string.replace("(", "").replace(")", "").split(", "),
+		var coords = get_coords_from_string(string),
 			position = new google.maps.LatLng(coords[0], coords[1]);
 
 		return position;
@@ -172,10 +177,68 @@ jQuery.fn.gmaps = function(o)
 
 		if(has_maps == true)
 		{
-			var mapOptions = {
-				center: new google.maps.LatLng(59.3428, 18.0982),
-				disableDefaultUI: true,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
+			var mapType,
+				mapStyles = [];
+
+			switch(script_maps.type)
+			{
+				default:
+				case 'roadmap':
+					mapType = google.maps.MapTypeId.ROADMAP;
+				break;
+
+				case 'satellite':
+					mapType = google.maps.MapTypeId.SATELLITE;
+				break;
+
+				case 'hybrid':
+					mapType = google.maps.MapTypeId.HYBRID;
+				break;
+
+				case 'terrain':
+					mapType = google.maps.MapTypeId.TERRAIN;
+				break;
+
+				case 'custom':
+					mapType = google.maps.MapTypeId.ROADMAP;
+					mapStyles = [
+						{"elementType": "geometry",															"stylers": [{	"color": "#f5f5f5"}]},
+						{"elementType": "labels.icon",														"stylers": [{	"visibility": "off"}]},
+						{"elementType": "labels.text.fill",													"stylers": [{	"color": "#616161"}]},
+						{"elementType": "labels.text.stroke",												"stylers": [{	"color": "#f5f5f5"}]},
+						{"featureType": "administrative", "elementType": "geometry",						"stylers": [{	"visibility": "off"}]},
+						{"featureType": "administrative.land_parcel", "elementType": "labels.text.fill",	"stylers": [{	"color": "#bdbdbd"}]},
+						{"featureType": "landscape", "elementType": "geometry.fill",						"stylers": [{	"color": "#efefef"}]},
+						{"featureType": "poi",																"stylers": [{	"visibility": "off"}]},
+						{"featureType": "poi", "elementType": "geometry",									"stylers": [{	"color": "#eeeeee"}]},
+						{"featureType": "poi", "elementType": "labels.text.fill",							"stylers": [{	"color": "#757575"}]},
+						{"featureType": "poi.park", "elementType": "geometry",								"stylers": [{	"color": "#e5e5e5"}]},
+						{"featureType": "poi.park", "elementType": "labels.text.fill",						"stylers": [{	"color": "#9e9e9e"}]},
+						{"featureType": "road",	"elementType": "geometry",									"stylers": [{	"color": "#ffffff"}]},
+						{"featureType": "road", "elementType": "labels.icon",								"stylers": [{	"visibility": "off"}]},
+						{"featureType": "road.arterial", "elementType": "labels.text.fill",					"stylers": [{	"color": "#757575"}]},
+						{"featureType": "road.highway", "elementType": "geometry",							"stylers": [{	"color": "#dadada"}]},
+						{"featureType": "road.highway", "elementType": "labels.text.fill",					"stylers": [{	"color": "#616161"}]},
+						{"featureType": "road.local", "elementType": "labels.text.fill",					"stylers": [{	"color": "#9e9e9e"}]},
+						{"featureType": "transit",															"stylers": [{	"visibility": "off"}]},
+						{"featureType": "transit.line", "elementType": "geometry",							"stylers": [{	"color": "#e5e5e5"}]},
+						{"featureType": "transit.station", "elementType": "geometry",						"stylers": [{	"color": "#eeeeee"}]},
+						{"featureType": "water", "elementType": "geometry",									"stylers": [{	"color": "#c9c9c9"}]},
+						{"featureType": "water", "elementType": "geometry.fill",							"stylers": [{	"color": "#87d9ff"},{	"saturation": -60}, {	"lightness": 30}]},
+						{"featureType": "water", "elementType": "labels.text.fill",							"stylers": [{	"color": "#ffffff"}]}
+					];
+				break;
+			}
+
+			var mapCoords = get_coords_from_string(script_maps.default_position),
+				mapOptions = {
+				center: new google.maps.LatLng(mapCoords[0], mapCoords[1]),
+				mapTypeControl: false,
+				streetViewControl: script_maps.display_street_view,
+				zoomControl: script_maps.display_zoom,
+				scaleControl: script_maps.display_scale,
+				mapTypeId: mapType,
+				styles: mapStyles,
 				zoom: zoom_default
 			};
 
@@ -185,7 +248,7 @@ jQuery.fn.gmaps = function(o)
 
 			set_initial_marker();
 
-			/* Bias the SearchBox results towards places that are within the bounds of the current map's viewport */
+			/* Bias the search results towards places that are within the bounds of the current map's viewport */
 			google.maps.event.addListener(map, 'bounds_changed', function()
 			{
 				var bounds = map.getBounds();
@@ -210,12 +273,13 @@ jQuery(function($)
 		collect_on_load('on_load_maps');
 	}
 
-	$(document).on('click', '.toggler', function()
+	$(document).on('click', '.toggler', function(e)
 	{
 		var toggler_rel = $(this).attr('rel'),
-			toggle_container = $('.toggle_container[rel=' + toggler_rel + ']');
+			toggle_container = $('.toggle_container[rel=' + toggler_rel + ']'),
+			is_toggle_container = $(e.target).parents(".toggle_container").length > 0;
 
-		if(toggle_container.length > 0)
+		if(toggle_container.length > 0 && is_toggle_container == false)
 		{
 			toggle_container.find('.maps_search_container').gmaps();
 		}
