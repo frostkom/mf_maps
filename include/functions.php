@@ -46,10 +46,14 @@ function settings_maps()
 
 	$arr_settings = array();
 	$arr_settings['setting_gmaps_api'] = __("API Key", 'lang_maps');
-	$arr_settings['setting_maps_type'] = __("Design", 'lang_maps');
-	$arr_settings['setting_maps_controls'] = __("Display Controls", 'lang_maps');
-	$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
-	$arr_settings['setting_profile_map'] = __("Display Map in Profile", 'lang_maps');
+
+	if(get_option('setting_gmaps_api') != '')
+	{
+		$arr_settings['setting_maps_type'] = __("Design", 'lang_maps');
+		$arr_settings['setting_maps_controls'] = __("Display Controls", 'lang_maps');
+		$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
+		$arr_settings['setting_profile_map'] = __("Display Map in Profile", 'lang_maps');
+	}
 
 	show_settings_fields(array('area' => $options_area, 'settings' => $arr_settings));
 }
