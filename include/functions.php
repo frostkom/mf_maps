@@ -72,7 +72,7 @@ if(!function_exists('setting_gmaps_api_callback'))
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key);
 
-		$suffix = ($option == '' ? "<a href='//developers.google.com/maps/documentation/javascript/get-api-key' rel='external'>".__("Get yours here", 'lang_maps')."</a>" : "");
+		$suffix = ($option == '' ? "<a href='//developers.google.com/maps/documentation/javascript/get-api-key'>".__("Get yours here", 'lang_maps')."</a>" : "");
 
 		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'suffix' => $suffix));
 	}

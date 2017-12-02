@@ -14,11 +14,10 @@ function on_load_maps()
 
 jQuery.fn.gmaps = function(o)
 {
-	var map,
-		zoom_default = 12;
-
 	var dom_obj = this,
 		dom_id = dom_obj.attr('id'),
+		map_object,
+		zoom_default = 12,
 		search_input_class = "maps_search_input",
 		search_input_obj = dom_obj.find('.' + search_input_class),
 		search_map_class = "maps_search_map",
@@ -35,16 +34,48 @@ jQuery.fn.gmaps = function(o)
 
 		if(data.icon)
 		{
-			var marker = new google.maps.Marker(
-			{
-				map: map,
-				icon: {
-					url: data.icon
-				},
+			var marker_data = {
+				map: map_object,
+				icon: {url: data.icon},
 				position: data.pos,
 				title: data.name
-			});
+			};
 		}
+
+		else
+		{
+			/*var icon = {
+				path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+				fillColor: 'yellow',
+				fillOpacity: 0.8,
+				scale: 1,
+				strokeColor: 'gold',
+				strokeWeight: 14
+			};
+			
+			var icon = {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 10
+			};
+			
+			var icon = {
+				anchor: new google.maps.Point(16, 16),
+				url: 'data:image/svg+xml;utf-8, \
+					<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"> \
+						<path fill="red" stroke="white" stroke-width="1.5" d="M3.5 3.5h25v25h-25z" ></path> \
+					</svg>'
+			}*/
+
+			var marker_data = {
+				map: map_object,
+				/*icon: icon,*/
+				label: data.letter || '',
+				position: data.pos,
+				title: data.name
+			};
+		}
+
+		var marker = new google.maps.Marker(marker_data);
 
 		if(data.text != '')
 		{
@@ -58,7 +89,7 @@ jQuery.fn.gmaps = function(o)
 
 			google.maps.event.addListener(marker, 'click', function()
 			{
-				infowindow.open(map, marker);
+				infowindow.open(map_object, marker);
 			});
 		}
 
@@ -88,10 +119,10 @@ jQuery.fn.gmaps = function(o)
 			{
 				var position = results[0].geometry.location;
 
-				add_marker({'pos': position, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png', 'text': "<a href='//google.com/maps/search/" + address + "' rel='external'><i class='fa fa-external-link fa-2x'></i></a>"});
+				add_marker({'pos': position}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png', 'text': "<a href='//google.com/maps/search/" + address + "'></a>"*/
 
-				map.setCenter(position);
-				map.setZoom(zoom_default);
+				map_object.setCenter(position);
+				map_object.setZoom(zoom_default);
 			}
 
 			else
@@ -109,10 +140,10 @@ jQuery.fn.gmaps = function(o)
 		{
 			var position = get_position_from_string(coords_temp);
 
-			add_marker({'pos': position, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png'});
+			add_marker({'pos': position}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png'*/
 
-			map.setCenter(position);
-			map.setZoom(zoom_default);
+			map_object.setCenter(position);
+			map_object.setZoom(zoom_default);
 		}
 
 		else if(search_input_obj.val() != '')
@@ -126,10 +157,10 @@ jQuery.fn.gmaps = function(o)
 			{
 				var position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-				add_marker({'pos': position, 'icon': script_maps.plugins_url + '/mf_maps/images/regroup.png'}); /*, 'name': script_maps.here_i_am */
+				add_marker({'pos': position, 'letter': 'I'}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/regroup.png', 'name': script_maps.here_i_am */
 
-				map.setCenter(position);
-				map.setZoom(zoom_default);
+				map_object.setCenter(position);
+				map_object.setZoom(zoom_default);
 			},
 			function(msg)
 			{
@@ -152,7 +183,7 @@ jQuery.fn.gmaps = function(o)
 
 			for(var i = 0, place; place = places[i]; i++)
 			{
-				add_marker({'pos': place.geometry.location, 'name': place.name, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png'});
+				add_marker({'pos': place.geometry.location, 'name': place.name, 'letter': 'S'}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png'*/
 
 				bounds.extend(place.geometry.location);
 
@@ -161,8 +192,8 @@ jQuery.fn.gmaps = function(o)
 
 			if(has_maps == true)
 			{
-				map.fitBounds(bounds);
-				map.setZoom(zoom_default);
+				map_object.fitBounds(bounds);
+				map_object.setZoom(zoom_default);
 			}
 		}
 	}
@@ -242,16 +273,16 @@ jQuery.fn.gmaps = function(o)
 				zoom: zoom_default
 			};
 
-			map = new google.maps.Map(search_map_obj_old, mapOptions);
+			map_object = new google.maps.Map(search_map_obj_old, mapOptions);
 
-			map.controls[google.maps.ControlPosition.TOP_LEFT].push(search_input_obj_old);
+			map_object.controls[google.maps.ControlPosition.TOP_LEFT].push(search_input_obj_old);
 
 			set_initial_marker();
 
 			/* Bias the search results towards places that are within the bounds of the current map's viewport */
-			google.maps.event.addListener(map, 'bounds_changed', function()
+			google.maps.event.addListener(map_object, 'bounds_changed', function()
 			{
-				var bounds = map.getBounds();
+				var bounds = map_object.getBounds();
 
 				searchBox.setBounds(bounds);
 			});
