@@ -24,7 +24,7 @@ else
 
 	$fullscreen_style = ".gm-fullscreen-control
 	{
-		display: none;	
+		display: none;
 	}";
 }
 
@@ -50,7 +50,7 @@ else
 {
 	$input_style = ".maps_search_input
 	{
-		display: none;	
+		display: none;
 	}";
 }
 
@@ -58,7 +58,7 @@ $out = "@media all
 {"
 	.$input_style
 	.$fullscreen_style
-	
+
 	.".maps_search_map
 	{
 		height: 50vh;

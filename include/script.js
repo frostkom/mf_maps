@@ -52,12 +52,12 @@ jQuery.fn.gmaps = function(o)
 				strokeColor: 'gold',
 				strokeWeight: 14
 			};
-			
+
 			var icon = {
 				path: google.maps.SymbolPath.CIRCLE,
 				scale: 10
 			};
-			
+
 			var icon = {
 				anchor: new google.maps.Point(16, 16),
 				url: 'data:image/svg+xml;utf-8, \
