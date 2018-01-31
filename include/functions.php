@@ -129,8 +129,8 @@ function setting_profile_map_callback()
 
 function show_search_maps($user)
 {
-	$profile_search_input = get_the_author_meta('profile_search_input', $user->ID);
-	$profile_search_coords = get_the_author_meta('profile_search_coords', $user->ID);
+	$profile_search_input = get_the_author_meta('meta_search_input', $user->ID);
+	$profile_search_coords = get_the_author_meta('meta_search_coords', $user->ID);
 
 	echo "<table class='form-table mf_form'>
 		<tr>
@@ -147,6 +147,6 @@ function save_search_maps($user_id, $password = "", $meta = array())
 	$profile_search_input = check_var('maps_search_input');
 	$profile_search_coords = check_var('maps_search_coords');
 
-	update_user_meta($user_id, 'profile_search_input', $profile_search_input);
-	update_user_meta($user_id, 'profile_search_coords', $profile_search_coords);
+	update_user_meta($user_id, 'meta_search_input', $profile_search_input);
+	update_user_meta($user_id, 'meta_search_coords', $profile_search_coords);
 }
