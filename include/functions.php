@@ -60,7 +60,7 @@ function setting_maps_type_callback()
 	$option = get_option($setting_key);
 
 	$arr_data = array(
-		'' => "-- ".__("Choose here", 'lang_maps')." --",
+		'' => "-- ".__("Choose Here", 'lang_maps')." --",
 		'roadmap' => __("Roadmap", 'lang_maps'),
 		'satellite' => __("Satellite", 'lang_maps'),
 		'hybrid' => __("Hybrid", 'lang_maps'),
