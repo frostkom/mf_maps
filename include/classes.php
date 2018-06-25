@@ -26,7 +26,7 @@ class mf_maps
 			$setting_maps_default_position = get_option_or_default('setting_maps_default_position', "(55.6133308, 12.976285800000028)");
 
 			mf_enqueue_style('style_maps', $plugin_include_url."style.php", $plugin_version);
-			mf_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, $plugin_version);
+			wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, $plugin_version);
 			mf_enqueue_script('script_maps', $plugin_include_url."script.js", array(
 				'type' => $setting_maps_type,
 				'display_street_view' => in_array('street_view', $setting_maps_controls),

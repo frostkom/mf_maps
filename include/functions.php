@@ -57,10 +57,10 @@ if(!function_exists('setting_gmaps_api_callback'))
 function setting_maps_type_callback()
 {
 	$setting_key = get_setting_key(__FUNCTION__);
-	$option = get_option($setting_key);
+	$option = get_option($setting_key, 'roadmap');
 
 	$arr_data = array(
-		'' => "-- ".__("Choose Here", 'lang_maps')." --",
+		//'' => "-- ".__("Choose Here", 'lang_maps')." --",
 		'roadmap' => __("Roadmap", 'lang_maps'),
 		'satellite' => __("Satellite", 'lang_maps'),
 		'hybrid' => __("Hybrid", 'lang_maps'),
