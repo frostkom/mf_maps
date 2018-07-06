@@ -12,6 +12,12 @@ jQuery(function($)
 			search_map_obj = dom_obj.find('.' + search_map_class),
 			search_coords_obj = dom_obj.find('.maps_search_coords');
 
+		function set_center(position)
+		{
+			map_object.setCenter(position);
+			map_object.setZoom(zoom_default);
+		}
+
 		function add_marker(data)
 		{
 			if(!data.name){		data.name = "";}
@@ -109,8 +115,7 @@ jQuery(function($)
 
 					add_marker({'pos': position}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png', 'text': "<a href='//google.com/maps/search/" + address + "'></a>"*/
 
-					map_object.setCenter(position);
-					map_object.setZoom(zoom_default);
+					set_center(position);
 				}
 
 				else
@@ -130,8 +135,7 @@ jQuery(function($)
 
 				add_marker({'pos': position}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/star.png'*/
 
-				map_object.setCenter(position);
-				map_object.setZoom(zoom_default);
+				set_center(position);
 			}
 
 			else if(search_input_obj.val() != '')
@@ -147,8 +151,7 @@ jQuery(function($)
 
 					add_marker({'pos': position, 'letter': 'I'}); /*, 'icon': script_maps.plugins_url + '/mf_maps/images/regroup.png', 'name': script_maps.here_i_am */
 
-					map_object.setCenter(position);
-					map_object.setZoom(zoom_default);
+					set_center(position);
 				},
 				function(msg)
 				{
