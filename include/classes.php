@@ -39,3 +39,20 @@ class mf_maps
 		}
 	}
 }
+
+if(class_exists('RWMB_Field'))
+{
+	class RWMB_Gps_Field extends RWMB_Field
+	{
+		static public function html($meta, $field)
+		{
+			/*return "<div class='map_wrapper'>"
+				.show_textfield(array('name' => "webshop_map_input", 'placeholder' => __("Search for an address and find its position", 'lang_maps')))
+				."<div id='webshop_map'></div>"
+				.show_textfield(array('name' => $field['field_name'], 'value' => $meta, 'placeholder' => __("Coordinates will be displayed here", 'lang_maps'), 'id' => "webshop_map_coords", 'xtra' => "class='rwmb-text'"))
+			."</div>";*/
+
+			return get_map(array('input_name' => 'webshop_map_input', 'coords_name' => $field['field_name'], 'coords' => $meta));
+		}
+	}
+}

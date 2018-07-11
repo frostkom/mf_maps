@@ -3,6 +3,7 @@
 function get_map($data)
 {
 	if(!isset($data['id'])){			$data['id'] = mt_rand(1, 100);}
+	if(!isset($data['input_name'])){	$data['input_name'] = 'maps_search_input';}
 	if(!isset($data['input'])){			$data['input'] = "";}
 	if(!isset($data['coords_name'])){	$data['coords_name'] = 'maps_search_coords';}
 	if(!isset($data['coords'])){		$data['coords'] = "";}

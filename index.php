@@ -3,11 +3,14 @@
 Plugin Name: MF Maps
 Plugin URI: https://github.com/frostkom/mf_maps
 Description: 
-Version: 2.3.21
+Version: 2.4.0
 Licence: GPLv2 or later
 Author: Martin Fors
-Author URI: http://martinfors.se
+Author URI: https://frostkom.se
+Text Domain: lang_maps
+Domain Path: /lang
 
+Depends: MF Base
 GitHub Plugin URI: frostkom/mf_maps
 */
 
