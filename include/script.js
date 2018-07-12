@@ -189,7 +189,7 @@ jQuery(function($)
 			}
 		}
 
-		if(search_input_obj.is(':visible') && search_input_obj.length > 0) /* && map_initiated == false */
+		if(search_input_obj.is(':visible') && search_input_obj.length > 0)
 		{
 			var has_maps = (search_map_obj.length > 0 ? true : false),
 				markers = [],
@@ -283,12 +283,14 @@ jQuery(function($)
 			{
 				set_search_marker(searchBox.getPlaces());
 			});
+
+			dom_obj.addClass('maps_initiated');
 		}
 	};
 
 	var i = 0;
 
-	$('.maps_search_container').each(function()
+	$(".maps_search_container:not(.maps_initiated):visible").each(function()
 	{
 		var dom_obj = $(this);
 
@@ -297,15 +299,25 @@ jQuery(function($)
 		i++;
 	});
 
-	$(document).on('click', '.toggler', function(e)
+	$(document).on('click', ".settings-nav ul li a", function()
+	{
+		var dom_href = $(this).attr('href');
+
+		setTimeout(function()
+		{
+			$(dom_href).next("table").find(".maps_search_container:not(.maps_initiated)").gmaps();
+		}, 100); /* It needs this delay because otherwise it will still be invisible when this is initiated */
+	});
+
+	$(document).on('click', ".toggler", function(e)
 	{
 		var toggler_rel = $(this).attr('rel'),
-			toggle_container = $('.toggle_container[rel=' + toggler_rel + ']'),
+			toggle_container = $(".toggle_container[rel=" + toggler_rel + "]"),
 			is_toggle_container = $(e.target).parents(".toggle_container").length > 0;
 
 		if(toggle_container.length > 0 && is_toggle_container == false)
 		{
-			toggle_container.find('.maps_search_container').gmaps();
+			toggle_container.find(".maps_search_container:not(.maps_initiated)").gmaps();
 		}
 	});
 });
