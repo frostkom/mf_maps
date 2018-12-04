@@ -1,7 +1,7 @@
 var map_object,
 	markers = [],
 	zoom_default = 12;
-	
+
 function init_map_object(selector)
 {
 	var mapType,
