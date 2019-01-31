@@ -2,10 +2,7 @@
 
 class mf_maps
 {
-	function __construct()
-	{
-
-	}
+	function __construct(){}
 
 	function admin_init()
 	{
