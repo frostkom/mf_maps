@@ -3,7 +3,7 @@
 Plugin Name: MF Maps
 Plugin URI: https://github.com/frostkom/mf_maps
 Description: 
-Version: 2.4.6
+Version: 2.5.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -26,18 +26,20 @@ if(is_admin())
 	register_activation_hook(__FILE__, 'activate_maps');
 	register_uninstall_hook(__FILE__, 'uninstall_maps');
 
-	add_action('admin_init', 'settings_maps');
+	add_action('admin_init', array($obj_maps, 'settings_maps'));
 	add_action('admin_init', array($obj_maps, 'admin_init'), 0);
 
-	add_action('show_user_profile', 'show_search_maps');
-	add_action('edit_user_profile', 'show_search_maps');
-	add_action('personal_options_update', 'save_search_maps');
-	add_action('edit_user_profile_update', 'save_search_maps');
+	add_action('show_user_profile', array($obj_maps, 'edit_user_profile'));
+	add_action('edit_user_profile', array($obj_maps, 'edit_user_profile'));
+	add_action('personal_options_update', array($obj_maps, 'edit_user_profile_update'));
+	add_action('edit_user_profile_update', array($obj_maps, 'edit_user_profile_update'));
 }
 
 else
 {
 	add_action('wp_head', array($obj_maps, 'wp_head'), 0);
+
+	//add_filter('filter_profile_fields', array($obj_maps, 'filter_profile_fields'));
 }
 
 function activate_maps()
