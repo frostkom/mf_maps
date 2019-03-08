@@ -28,7 +28,7 @@ function get_coordinates_from_location($location)
 			break;
 
 			default:
-				do_log(__("I could not connect to gMaps", 'lang_maps').": ".$headers['http_code']." (".var_export($headers, true).", ".$content.")");
+				do_log("I could not connect to gMaps: ".$headers['http_code']." (".var_export($headers, true).", ".$content.")");
 			break;
 		}
 	}
