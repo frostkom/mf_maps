@@ -1,5 +1,6 @@
 var map_object,
 	markers = [],
+	lookup = [],
 	zoom_default = 12;
 
 function init_map_object(selector)
@@ -73,6 +74,19 @@ function init_map_object(selector)
 	map_object = new google.maps.Map(selector, mapOptions);
 }
 
+/*function is_location_free(search)
+{
+	for(var i = 0, l = lookup.length; i < l; i++)
+	{
+		if(lookup[i] === search)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}*/
+
 function add_marker(data)
 {
 	if(!data.id){		data.id = '';}
@@ -103,25 +117,33 @@ function add_marker(data)
 		};
 	}
 
-	var marker = new google.maps.Marker(marker_data);
-
-	if(data.text != '')
+	/*if(data.id && data.id == '' || is_location_free(data.id))
 	{
-		var infowindow = new google.maps.InfoWindow(
+		if(data.id && data.id != '')
 		{
-			content: "<div class='marker_content'>"
-				+ (data.name != '' ? "<h3>" + data.name + "</h3>" : "")
-				+ (data.text != '' ? "<p>" + data.text + "</p>" : "")
-			+ "</div>"
-		});
+			lookup.push(data.id);
+		}*/
 
-		google.maps.event.addListener(marker, 'click', function()
+		var marker = new google.maps.Marker(marker_data);
+
+		if(data.name != '')
 		{
-			infowindow.open(map_object, marker);
-		});
-	}
+			var infowindow = new google.maps.InfoWindow(
+			{
+				content: "<div class='marker_content'>"
+					+ (data.name != '' ? "<h3>" + data.name + "</h3>" : "")
+					+ (data.text != '' ? "<p>" + data.text + "</p>" : "")
+				+ "</div>"
+			});
 
-	markers.push(marker);
+			google.maps.event.addListener(marker, 'click', function()
+			{
+				infowindow.open(map_object, marker);
+			});
+		}
+
+		markers.push(marker);
+	/*}*/
 }
 
 function get_coords_from_string(string)

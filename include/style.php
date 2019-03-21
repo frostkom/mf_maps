@@ -63,6 +63,13 @@ $out = "@media all
 	{
 		height: 50vh;
 	}
+
+	.marker_content h3
+	{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 }";
 
 echo $out;
