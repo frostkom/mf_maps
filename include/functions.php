@@ -18,7 +18,7 @@ function get_coordinates_from_location($location)
 			case 200:
 				$json = json_decode($content, true);
 
-				if($json['results'][0]['geometry'])
+				if(isset($json['results'][0]['geometry']) && $json['results'][0]['geometry'])
 				{
 					$lat = str_replace(',', '.', $json['results'][0]['geometry']['location']['lat']);
 					$lng = str_replace(',', '.',$json['results'][0]['geometry']['location']['lng']);
