@@ -262,7 +262,7 @@ jQuery(function($)
 			}
 		}
 
-		if(search_input_obj.is(':visible') && search_input_obj.length > 0)
+		if(search_input_obj.is(":visible") && search_input_obj.length > 0)
 		{
 			var has_maps = (search_map_obj.length > 0 ? true : false),
 				search_input_obj_old = document.getElementById(dom_id).getElementsByClassName(search_input_class)[0],
