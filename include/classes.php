@@ -112,7 +112,7 @@ class mf_maps
 		}
 	}
 
-	function edit_user_profile_update($user_id, $password = "", $meta = array())
+	function profile_update($user_id) //, $password = "", $meta = array()
 	{
 		if(get_option('setting_profile_map') == 'yes')
 		{
