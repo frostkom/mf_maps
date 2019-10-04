@@ -3,7 +3,7 @@
 Plugin Name: MF Maps
 Plugin URI: https://github.com/frostkom/mf_maps
 Description: 
-Version: 2.5.8
+Version: 2.5.10
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -15,7 +15,6 @@ GitHub Plugin URI: frostkom/mf_maps
 */
 
 include_once("include/classes.php");
-include_once("include/functions.php");
 
 $obj_maps = new mf_maps();
 
@@ -41,6 +40,9 @@ else
 
 	//add_filter('filter_profile_fields', array($obj_maps, 'filter_profile_fields'));
 }
+
+add_filter('get_map', array($obj_maps, 'get_map'), 10, 2);
+add_filter('get_coordinates_from_location', array($obj_maps, 'get_coordinates_from_location'));
 
 function activate_maps()
 {

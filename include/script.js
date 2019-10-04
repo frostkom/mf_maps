@@ -87,6 +87,15 @@ function init_map_object(selector)
 	return true;
 }*/
 
+function add_my_position_marker(position)
+{
+	var position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+	add_marker({'pos': position, 'letter': 'I'});
+
+	set_center(position);
+}
+
 function add_marker(data)
 {
 	if(!data.id){		data.id = '';}
@@ -146,6 +155,12 @@ function add_marker(data)
 	/*}*/
 }
 
+function set_center(position)
+{
+	map_object.setCenter(position);
+	map_object.setZoom(zoom_default);
+}
+
 function get_coords_from_string(string)
 {
 	return string.replace("(", "").replace(")", "").split(", ");
@@ -170,12 +185,6 @@ jQuery(function($)
 			search_map_class = "maps_search_map",
 			search_map_obj = dom_obj.find("." + search_map_class),
 			search_coords_obj = dom_obj.find(".maps_search_coords");
-
-		function set_center(position)
-		{
-			map_object.setCenter(position);
-			map_object.setZoom(zoom_default);
-		}
 
 		function geocode_address(address)
 		{
@@ -221,11 +230,7 @@ jQuery(function($)
 			{
 				navigator.geolocation.getCurrentPosition(function(position)
 				{
-					var position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-					add_marker({'pos': position, 'letter': 'I'});
-
-					set_center(position);
+					add_my_position_marker(position);
 				},
 				function(msg)
 				{

@@ -78,7 +78,8 @@ class mf_maps
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key, '(55.6133308, 12.976285800000028)');
 
-		echo get_map(array('input' => '', 'coords_name' => $setting_key, 'coords' => $option));
+		//echo get_map(array('input' => '', 'coords_name' => $setting_key, 'coords' => $option));
+		echo apply_filters('get_map', '', array('input' => '', 'coords_name' => $setting_key, 'coords' => $option));
 	}
 
 	function setting_profile_map_callback()
@@ -105,7 +106,8 @@ class mf_maps
 				<tr>
 					<th><label for='profile_coords'>".__("City", 'lang_maps')."</label></th>
 					<td>"
-						.get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
+						//.get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
+						.apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
 					."</td>
 				</tr>
 			</table>";
@@ -158,11 +160,79 @@ class mf_maps
 			$profile_search_coords = get_the_author_meta('meta_search_coords', $user->ID);
 
 			//get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
+			//apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
 			$arr_fields[] = array('type' => 'map', 'name' => $, 'text' => __("City", 'lang_maps'));
 		}
 
 		return $arr_fields;
 	}*/
+
+	function get_map($out, $data)
+	{
+		if(!isset($data['id'])){			$data['id'] = mt_rand(1, 100);}
+		if(!isset($data['input_name'])){	$data['input_name'] = 'maps_search_input';}
+		if(!isset($data['input'])){			$data['input'] = "";}
+		if(!isset($data['coords_name'])){	$data['coords_name'] = 'maps_search_coords';}
+		if(!isset($data['coords'])){		$data['coords'] = "";}
+
+		$out = "<div id='maps_search_container_".$data['id']."' class='maps_search_container'>"
+			.show_textfield(array('name' => 'maps_search_input', 'value' => $data['input'], 'placeholder' => __("Search for an address and find its position", 'lang_maps'), 'xtra' => "class='maps_search_input'"))
+			."<div class='maps_search_map'></div>"
+			.input_hidden(array('name' => $data['coords_name'], 'value' => $data['coords'], 'xtra' => "class='maps_search_coords'"))
+		."</div>";
+
+		return $out;
+	}
+
+	function get_transient_coordinates_from_location()
+	{
+		$out = "";
+
+		$setting_gmaps_api = get_option('setting_gmaps_api');
+
+		if($setting_gmaps_api != '')
+		{
+			list($content, $headers) = get_url_content(array(
+				'url' => "https://maps.googleapis.com/maps/api/geocode/json?address=".urlencode($this->location_temp)."&key=".$setting_gmaps_api,
+				'catch_head' => true,
+			));
+
+			switch($headers['http_code'])
+			{
+				case 200:
+					$json = json_decode($content, true);
+
+					if(isset($json['results'][0]['geometry']) && $json['results'][0]['geometry'])
+					{
+						$lat = str_replace(',', '.', $json['results'][0]['geometry']['location']['lat']);
+						$lng = str_replace(',', '.',$json['results'][0]['geometry']['location']['lng']);
+
+						$out = "(".$lat.", ".$lng.")";
+					}
+				break;
+
+				default:
+					do_log("I could not connect to gMaps: ".$headers['http_code']." (".var_export($headers, true).", ".$content.")");
+				break;
+			}
+		}
+
+		return $out;
+	}
+
+	function get_coordinates_from_location($location)
+	{
+		$out = "";
+
+		if($location != '')
+		{
+			$this->location_temp = $location;
+
+			$out = get_or_set_transient(array('key' => 'coordinates_from_location_'.$location, 'callback' => array($this, 'get_transient_coordinates_from_location')));
+		}
+
+		return $out;
+	}
 }
 
 if(class_exists('RWMB_Field'))
@@ -171,7 +241,8 @@ if(class_exists('RWMB_Field'))
 	{
 		static public function html($meta, $field)
 		{
-			return get_map(array('input_name' => 'webshop_map_input', 'coords_name' => $field['field_name'], 'coords' => $meta));
+			//return get_map(array('input_name' => 'webshop_map_input', 'coords_name' => $field['field_name'], 'coords' => $meta));
+			return apply_filters('get_map', '', array('input_name' => 'webshop_map_input', 'coords_name' => $field['field_name'], 'coords' => $meta));
 		}
 	}
 }
