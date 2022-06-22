@@ -58,10 +58,10 @@ function init_map_object(selector)
 		break;
 	}
 
-	var mapCoords = get_coords_from_string(script_maps.default_position);
+	var mapCoordinates = get_coordinates_from_string(script_maps.default_position);
 
 	var mapOptions = {
-		center: new google.maps.LatLng(mapCoords[0], mapCoords[1]),
+		center: new google.maps.LatLng(mapCoordinates[0], mapCoordinates[1]),
 		mapTypeControl: false,
 		streetViewControl: script_maps.display_street_view,
 		zoomControl: script_maps.display_zoom,
@@ -161,15 +161,15 @@ function set_center(position)
 	map_object.setZoom(zoom_default);
 }
 
-function get_coords_from_string(string)
+function get_coordinates_from_string(string)
 {
 	return string.replace("(", "").replace(")", "").split(", ");
 }
 
 function get_position_from_string(string)
 {
-	var coords = get_coords_from_string(string),
-		position = new google.maps.LatLng(coords[0], coords[1]);
+	var coordinates = get_coordinates_from_string(string),
+		position = new google.maps.LatLng(coordinates[0], coordinates[1]);
 
 	return position;
 }
@@ -184,7 +184,7 @@ jQuery(function($)
 			search_input_obj = dom_obj.find("." + search_input_class),
 			search_map_class = "maps_search_map",
 			search_map_obj = dom_obj.find("." + search_map_class),
-			search_coords_obj = dom_obj.find(".maps_search_coords");
+			search_coordinates_obj = dom_obj.find(".maps_search_coordinates");
 
 		function geocode_address(address)
 		{
@@ -210,11 +210,11 @@ jQuery(function($)
 
 		function set_initial_marker()
 		{
-			var coords_temp = search_coords_obj.val();
+			var coordinates_temp = search_coordinates_obj.val();
 
-			if(coords_temp != '')
+			if(coordinates_temp != '')
 			{
-				var position = get_position_from_string(coords_temp);
+				var position = get_position_from_string(coordinates_temp);
 
 				add_marker({'pos': position});
 
@@ -256,7 +256,7 @@ jQuery(function($)
 
 					bounds.extend(place.geometry.location);
 
-					search_coords_obj.val(place.geometry.location);
+					search_coordinates_obj.val(place.geometry.location);
 				}
 
 				if(has_maps == true)
@@ -269,7 +269,7 @@ jQuery(function($)
 
 		if(search_input_obj.is(":visible") && search_input_obj.length > 0)
 		{
-			var has_maps = (search_map_obj.length > 0 ? true : false),
+			var has_maps = (search_map_obj.length > 0),
 				search_input_obj_old = document.getElementById(dom_id).getElementsByClassName(search_input_class)[0],
 				search_map_obj_old = document.getElementById(dom_id).getElementsByClassName(search_map_class)[0],
 				searchBox = new google.maps.places.SearchBox(search_input_obj_old);
@@ -294,6 +294,16 @@ jQuery(function($)
 			});
 
 			dom_obj.addClass('maps_initiated');
+
+			if(script_maps.display_fullscreen == false)
+			{
+				dom_obj.addClass('hide_fullscreen');
+			}
+
+			if(script_maps.display_search == false)
+			{
+				search_input_obj.addClass('hide');
+			}
 		}
 	};
 

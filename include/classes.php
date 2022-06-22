@@ -78,8 +78,8 @@ class mf_maps
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key, '(55.6133308, 12.976285800000028)');
 
-		//echo get_map(array('input' => '', 'coords_name' => $setting_key, 'coords' => $option));
-		echo apply_filters('get_map', '', array('input' => '', 'coords_name' => $setting_key, 'coords' => $option));
+		//echo get_map(array('input' => '', 'coordinates_name' => $setting_key, 'coordinates' => $option));
+		echo apply_filters('get_map', '', array('input' => '', 'coordinates_name' => $setting_key, 'coordinates' => $option));
 	}
 
 	function setting_profile_map_callback()
@@ -100,14 +100,14 @@ class mf_maps
 		if(get_option('setting_profile_map') == 'yes')
 		{
 			$profile_search_input = get_the_author_meta('meta_search_input', $user->ID);
-			$profile_search_coords = get_the_author_meta('meta_search_coords', $user->ID);
+			$profile_search_coordinates = get_the_author_meta('meta_search_coords', $user->ID);
 
 			echo "<table class='form-table mf_form'>
 				<tr>
-					<th><label for='profile_coords'>".__("City", 'lang_maps')."</label></th>
-					<td>"
-						//.get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
-						.apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
+					<th><label>".__("City", 'lang_maps')."</label></th>" // for='profile_coords'
+					."<td>"
+						//.get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
+						.apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
 					."</td>
 				</tr>
 			</table>";
@@ -119,10 +119,10 @@ class mf_maps
 		if(get_option('setting_profile_map') == 'yes')
 		{
 			$profile_search_input = check_var('maps_search_input');
-			$profile_search_coords = check_var('maps_search_coords');
+			$profile_search_coordinates = check_var('maps_search_coordinates');
 
 			update_user_meta($user_id, 'meta_search_input', $profile_search_input);
-			update_user_meta($user_id, 'meta_search_coords', $profile_search_coords);
+			update_user_meta($user_id, 'meta_search_coords', $profile_search_coordinates);
 		}
 	}
 
@@ -144,9 +144,11 @@ class mf_maps
 			mf_enqueue_script('script_maps', $plugin_include_url."script.js", array(
 				'plugins_url' => plugins_url(),
 				'type' => $setting_maps_type,
+				'display_fullscreen' => in_array('fullscreen', $setting_maps_controls),
+				'display_scale' => in_array('scale', $setting_maps_controls),
+				'display_search' => in_array('search', $setting_maps_controls),
 				'display_street_view' => in_array('street_view', $setting_maps_controls),
 				'display_zoom' => in_array('zoom', $setting_maps_controls),
-				'display_scale' => in_array('scale', $setting_maps_controls),
 				'default_position' => $setting_maps_default_position,
 			), $plugin_version);
 		}
@@ -157,10 +159,10 @@ class mf_maps
 		if(get_option('setting_profile_map') == 'yes')
 		{
 			$profile_search_input = get_the_author_meta('meta_search_input', $user->ID);
-			$profile_search_coords = get_the_author_meta('meta_search_coords', $user->ID);
+			$profile_search_coordinates = get_the_author_meta('meta_search_coords', $user->ID);
 
-			//get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
-			//apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coords' => $profile_search_coords))
+			//get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
+			//apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
 			$arr_fields[] = array('type' => 'map', 'name' => $, 'text' => __("City", 'lang_maps'));
 		}
 
@@ -169,16 +171,16 @@ class mf_maps
 
 	function get_map($out, $data)
 	{
-		if(!isset($data['id'])){			$data['id'] = mt_rand(1, 100);}
-		if(!isset($data['input_name'])){	$data['input_name'] = 'maps_search_input';}
-		if(!isset($data['input'])){			$data['input'] = "";}
-		if(!isset($data['coords_name'])){	$data['coords_name'] = 'maps_search_coords';}
-		if(!isset($data['coords'])){		$data['coords'] = "";}
+		if(!isset($data['id'])){				$data['id'] = mt_rand(1, 100);}
+		if(!isset($data['input_name'])){		$data['input_name'] = 'maps_search_input';}
+		if(!isset($data['input'])){				$data['input'] = "";}
+		if(!isset($data['coordinates_name'])){	$data['coordinates_name'] = 'maps_search_coordinates';}
+		if(!isset($data['coordinates'])){		$data['coordinates'] = "";}
 
 		$out = "<div id='maps_search_container_".$data['id']."' class='maps_search_container'>"
 			.show_textfield(array('name' => 'maps_search_input', 'value' => $data['input'], 'placeholder' => __("Search for an address and find its position", 'lang_maps'), 'xtra' => "class='maps_search_input'"))
 			."<div class='maps_search_map'></div>"
-			.input_hidden(array('name' => $data['coords_name'], 'value' => $data['coords'], 'xtra' => "class='maps_search_coords'"))
+			.input_hidden(array('name' => $data['coordinates_name'], 'value' => $data['coordinates'], 'xtra' => "class='maps_search_coordinates'"))
 		."</div>";
 
 		return $out;
@@ -241,8 +243,8 @@ if(class_exists('RWMB_Field'))
 	{
 		static public function html($meta, $field)
 		{
-			//return get_map(array('input_name' => 'webshop_map_input', 'coords_name' => $field['field_name'], 'coords' => $meta));
-			return apply_filters('get_map', '', array('input_name' => 'webshop_map_input', 'coords_name' => $field['field_name'], 'coords' => $meta));
+			//return get_map(array('input_name' => 'webshop_map_input', 'coordinates_name' => $field['field_name'], 'coordinates' => $meta));
+			return apply_filters('get_map', '', array('input_name' => 'webshop_map_input', 'coordinates_name' => $field['field_name'], 'coordinates' => $meta));
 		}
 	}
 }
