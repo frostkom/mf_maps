@@ -30,12 +30,12 @@ $out = "@media all
 		{
 			width: 98% !important;
 		}
-		
+
 	.maps_initiated.hide_fullscreen .gm-fullscreen-control
 	{
 		display: none;
 	}
-	
+
 	.maps_search_map
 	{
 		height: 50vh;

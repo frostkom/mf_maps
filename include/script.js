@@ -1,7 +1,8 @@
 var map_object,
 	markers = [],
 	lookup = [],
-	zoom_default = 12;
+	zoom_default = 12,
+	arr_infowindows = [];
 
 function init_map_object(selector)
 {
@@ -147,8 +148,20 @@ function add_marker(data)
 
 			google.maps.event.addListener(marker, 'click', function()
 			{
+				for(var i = 0; i < arr_infowindows.length; i++)
+				{
+					arr_infowindows[i].close();
+				}
+
+				arr_infowindows.push(infowindow);
+
 				infowindow.open(map_object, marker);
 			});
+
+			if(typeof webshop_marker_event === 'function')
+			{
+				webshop_marker_event(data, map_object, marker);
+			}
 		}
 
 		markers.push(marker);
