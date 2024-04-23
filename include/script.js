@@ -345,7 +345,7 @@ jQuery(function($)
 	{
 		var toggler_rel = $(this).attr('rel'),
 			toggle_container = $(".toggle_container[rel=" + toggler_rel + "]"),
-			is_toggle_container = $(e.target).parents(".toggle_container").length > 0;
+			is_toggle_container = ($(e.target).parents(".toggle_container").length > 0);
 
 		if(toggle_container.length > 0 && is_toggle_container == false)
 		{
