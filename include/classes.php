@@ -222,6 +222,34 @@ class mf_maps
 		return $out;
 	}
 
+	function get_or_set_transient($data)
+	{
+		if(!isset($data['key'])){			$data['key'] = '';}
+		if(!isset($data['callback'])){		$data['callback'] = '';}
+
+		$out = "";
+
+		if($data['key'] != '')
+		{
+			$out = get_transient($data['key']);
+
+			if($out == "")
+			{
+				if(is_callable($data['callback']))
+				{
+					$out = call_user_func($data['callback']);
+
+					if($out != '')
+					{
+						set_transient($data['key'], $out, DAY_IN_SECONDS);
+					}
+				}
+			}
+		}
+
+		return $out;
+	}
+
 	function get_coordinates_from_location($location)
 	{
 		$out = "";
@@ -230,7 +258,7 @@ class mf_maps
 		{
 			$this->location_temp = $location;
 
-			$out = get_or_set_transient(array('key' => 'coordinates_from_location_'.$location, 'callback' => array($this, 'get_transient_coordinates_from_location')));
+			$out = $this->get_or_set_transient(array('key' => 'coordinates_from_location_'.$location, 'callback' => array($this, 'get_transient_coordinates_from_location')));
 		}
 
 		return $out;
