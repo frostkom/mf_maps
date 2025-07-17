@@ -78,7 +78,6 @@ class mf_maps
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key, '(55.6133308, 12.976285800000028)');
 
-		//echo get_map(array('input' => '', 'coordinates_name' => $setting_key, 'coordinates' => $option));
 		echo apply_filters('get_map', '', array('input' => '', 'coordinates_name' => $setting_key, 'coordinates' => $option));
 	}
 
@@ -90,10 +89,10 @@ class mf_maps
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 	}
 
-	function admin_init()
+	/*function admin_init()
 	{
-		$this->wp_head();
-	}
+		$this->init_maps();
+	}*/
 
 	function edit_user_profile($user)
 	{
@@ -106,7 +105,6 @@ class mf_maps
 				<tr>
 					<th><label>".__("City", 'lang_maps')."</label></th>" // for='profile_coords'
 					."<td>"
-						//.get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
 						.apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
 					."</td>
 				</tr>
@@ -126,7 +124,7 @@ class mf_maps
 		}
 	}
 
-	function wp_head()
+	function init_maps()
 	{
 		$setting_gmaps_api = get_option('setting_gmaps_api');
 
@@ -161,7 +159,6 @@ class mf_maps
 			$profile_search_input = get_the_author_meta('meta_search_input', $user->ID);
 			$profile_search_coordinates = get_the_author_meta('meta_search_coords', $user->ID);
 
-			//get_map(array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
 			//apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
 			$arr_fields[] = array('type' => 'map', 'name' => $, 'text' => __("City", 'lang_maps'));
 		}
@@ -176,6 +173,8 @@ class mf_maps
 		if(!isset($data['input'])){				$data['input'] = "";}
 		if(!isset($data['coordinates_name'])){	$data['coordinates_name'] = 'maps_search_coordinates';}
 		if(!isset($data['coordinates'])){		$data['coordinates'] = "";}
+
+		$this->init_maps();
 
 		$out = "<div id='maps_search_container_".$data['id']."' class='maps_search_container'>"
 			.show_textfield(array('name' => 'maps_search_input', 'value' => $data['input'], 'placeholder' => __("Search for an address and find its position", 'lang_maps'), 'xtra' => "class='maps_search_input'"))
@@ -271,7 +270,6 @@ if(class_exists('RWMB_Field'))
 	{
 		static public function html($meta, $field)
 		{
-			//return get_map(array('input_name' => 'webshop_map_input', 'coordinates_name' => $field['field_name'], 'coordinates' => $meta));
 			return apply_filters('get_map', '', array('input_name' => 'webshop_map_input', 'coordinates_name' => $field['field_name'], 'coordinates' => $meta));
 		}
 	}
