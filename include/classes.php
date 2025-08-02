@@ -2,6 +2,8 @@
 
 class mf_maps
 {
+	var $location_temp;
+
 	function __construct(){}
 
 	function settings_maps()

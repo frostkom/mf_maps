@@ -341,7 +341,7 @@ jQuery(function($)
 		}, 100); /* It needs this delay because otherwise it will still be invisible when this is initiated */
 	});
 
-	$(document).on('click', ".toggler", function(e)
+	/*$(document).on('click', ".toggler", function(e)
 	{
 		var toggler_rel = $(this).attr('rel'),
 			toggle_container = $(".toggle_container[rel=" + toggler_rel + "]"),
@@ -351,5 +351,5 @@ jQuery(function($)
 		{
 			toggle_container.find(".maps_search_container:not(.maps_initiated)").gmaps();
 		}
-	});
+	});*/
 });
