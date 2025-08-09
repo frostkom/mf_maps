@@ -6,6 +6,68 @@ class mf_maps
 
 	function __construct(){}
 
+	function block_render_map_callback($attributes)
+	{
+		if(!isset($attributes['maps_latitude'])){		$attributes['maps_latitude'] = 411964;}
+		if(!isset($attributes['maps_longitude'])){		$attributes['maps_longitude'] = 6175590;}
+		if(!isset($attributes['maps_zoom'])){			$attributes['maps_zoom'] = 4;}
+
+		$plugin_include_url = plugin_dir_url(__FILE__);
+
+		wp_enqueue_style('style_openlayers', "//cdn.jsdelivr.net/npm/ol@v10.1.0/ol.css");
+		//wp_enqueue_style('style_openlayers_switcher', "//cdn.jsdelivr.net/npm/ol-layerswitcher@latest/dist/ol-layerswitcher.css");
+		mf_enqueue_style('style_maps_map', $plugin_include_url."style_map.css");
+
+		wp_enqueue_script('script_openlayers', "//cdn.jsdelivr.net/npm/ol@v10.1.0/dist/ol.js");
+		//wp_enqueue_script('script_openlayers_switcher', "//cdn.jsdelivr.net/npm/ol-layerswitcher@latest/dist/ol-layerswitcher.js");
+		wp_enqueue_script('script_proj4js', "//cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js");
+		mf_enqueue_script('script_maps_map', $plugin_include_url."script_map.js", array(
+			'center' => array((int)$attributes['maps_latitude'], (int)$attributes['maps_longitude']),
+			'zoom' => $attributes['maps_zoom'],
+			//'ajax_url' => admin_url('admin-ajax.php'),
+		));
+
+		$out = "<div".parse_block_attributes(array('class' => "widget maps_map", 'attributes' => $attributes)).">
+			<div class='map_container' tabindex='0'></div>";
+
+			/*$out .= "<div class='map_search mf_form'>"
+				.show_textfield(array('placeholder' => __("Search for property or address", 'lang_maps')))
+				."<ul class='striped hide'>
+					<li>".__("Search in the field above and the result will show up here", 'lang_maps')."</li>
+				</ul>"
+			."</div>";*/
+
+			$out .= "<div class='map_info mf_form'></div>
+		</div>";
+
+		return $out;
+	}
+
+	function enqueue_block_editor_assets()
+	{
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		wp_register_script('script_maps_block_wp', $plugin_include_url."block/script_wp.js", array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor'), $plugin_version);
+
+		wp_localize_script('script_maps_block_wp', 'script_maps_block_wp', array(
+			'block_title' => __("Map", 'lang_maps'),
+			'block_description' => __("Display a Map", 'lang_maps'),
+			'maps_latitude_label' => __("Latitude", 'lang_maps'),
+			'maps_longitude_label' => __("Longitude", 'lang_maps'),
+			'maps_zoom_label' => __("Zoom", 'lang_maps'),
+		));
+	}
+
+	function init()
+	{
+		register_block_type('mf/maps', array(
+			'editor_script' => 'script_maps_block_wp',
+			'editor_style' => 'style_base_block_wp',
+			'render_callback' => array($this, 'block_render_map_callback'),
+		));
+	}
+
 	function settings_maps()
 	{
 		$options_area = __FUNCTION__;
@@ -91,11 +153,6 @@ class mf_maps
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
 	}
 
-	/*function admin_init()
-	{
-		$this->init_maps();
-	}*/
-
 	function edit_user_profile($user)
 	{
 		if(get_option('setting_profile_map') == 'yes')
@@ -153,20 +210,6 @@ class mf_maps
 			));
 		}
 	}
-
-	/*function filter_profile_fields($arr_fields)
-	{
-		if(get_option('setting_profile_map') == 'yes')
-		{
-			$profile_search_input = get_the_author_meta('meta_search_input', $user->ID);
-			$profile_search_coordinates = get_the_author_meta('meta_search_coords', $user->ID);
-
-			//apply_filters('get_map', '', array('id' => $user->ID, 'input' => $profile_search_input, 'coordinates' => $profile_search_coordinates))
-			$arr_fields[] = array('type' => 'map', 'name' => $, 'text' => __("City", 'lang_maps'));
-		}
-
-		return $arr_fields;
-	}*/
 
 	function get_map($out, $data)
 	{

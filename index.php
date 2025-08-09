@@ -3,7 +3,7 @@
 Plugin Name: MF Maps
 Plugin URI: https://github.com/frostkom/mf_maps
 Description:
-Version: 2.6.12
+Version: 2.7.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -17,23 +17,18 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	$obj_maps = new mf_maps();
 
+	add_action('enqueue_block_editor_assets', array($obj_maps, 'enqueue_block_editor_assets'));
+	add_action('init', array($obj_maps, 'init'));
+
 	if(is_admin())
 	{
 		register_uninstall_hook(__FILE__, 'uninstall_maps');
 
 		add_action('admin_init', array($obj_maps, 'settings_maps'));
-		//add_action('admin_init', array($obj_maps, 'admin_init'), 0);
 
 		add_action('show_user_profile', array($obj_maps, 'edit_user_profile'));
 		add_action('edit_user_profile', array($obj_maps, 'edit_user_profile'));
 		add_action('profile_update', array($obj_maps, 'profile_update'));
-	}
-
-	else
-	{
-		//add_action('wp_head', array($obj_maps, 'init_maps'), 0);
-
-		//add_filter('filter_profile_fields', array($obj_maps, 'filter_profile_fields'));
 	}
 
 	add_filter('get_map', array($obj_maps, 'get_map'), 10, 2);
