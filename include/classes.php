@@ -24,7 +24,6 @@ class mf_maps
 		mf_enqueue_script('script_maps_map', $plugin_include_url."script_map.js", array(
 			'center' => array((int)$attributes['maps_latitude'], (int)$attributes['maps_longitude']),
 			'zoom' => $attributes['maps_zoom'],
-			//'ajax_url' => admin_url('admin-ajax.php'),
 		));
 
 		$out = "<div".parse_block_attributes(array('class' => "widget maps_map", 'attributes' => $attributes)).">

@@ -340,16 +340,4 @@ jQuery(function($)
 			$(dom_href).next("table").find(".maps_search_container:not(.maps_initiated)").gmaps();
 		}, 100); /* It needs this delay because otherwise it will still be invisible when this is initiated */
 	});
-
-	/*$(document).on('click', ".toggler", function(e)
-	{
-		var toggler_rel = $(this).attr('rel'),
-			toggle_container = $(".toggle_container[rel=" + toggler_rel + "]"),
-			is_toggle_container = ($(e.target).parents(".toggle_container").length > 0);
-
-		if(toggle_container.length > 0 && is_toggle_container == false)
-		{
-			toggle_container.find(".maps_search_container:not(.maps_initiated)").gmaps();
-		}
-	});*/
 });
