@@ -158,10 +158,10 @@ function add_marker(data)
 				infowindow.open(map_object, marker);
 			});
 
-			if(typeof webshop_marker_event === 'function')
+			/*if(typeof webshop_marker_event === 'function')
 			{
 				webshop_marker_event(data, map_object, marker);
-			}
+			}*/
 		}
 
 		markers.push(marker);
