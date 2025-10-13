@@ -60,6 +60,8 @@ class mf_maps
 
 	function init()
 	{
+		load_plugin_textdomain('lang_maps', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+
 		register_block_type('mf/maps', array(
 			'editor_script' => 'script_maps_block_wp',
 			'editor_style' => 'style_base_block_wp',
