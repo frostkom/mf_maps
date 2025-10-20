@@ -197,7 +197,7 @@ class mf_maps
 			$plugin_include_url = plugin_dir_url(__FILE__);
 			$plugin_version = get_plugin_version(__FILE__);
 
-			mf_enqueue_style('style_maps', $plugin_include_url."style.php");
+			mf_enqueue_style('style_maps', $plugin_include_url."style.css");
 			wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, array(), $plugin_version);
 			mf_enqueue_script('script_maps', $plugin_include_url."script.js", array(
 				'plugins_url' => plugins_url(),
