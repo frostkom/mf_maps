@@ -187,8 +187,8 @@ jQuery(function($)
 
 		if(markerSearch)
 		{
-            map.removeLayer(markerSearch);
-        }
+			map.removeLayer(markerSearch);
+		}
 
 		if(dom_obj_fnr > 0)
 		{
