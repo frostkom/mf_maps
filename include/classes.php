@@ -247,12 +247,12 @@ class mf_maps
 			switch($headers['http_code'])
 			{
 				case 200:
-					$json = json_decode($content, true);
+					$arr_json = json_decode($content, true);
 
-					if(isset($json['results'][0]['geometry']) && $json['results'][0]['geometry'])
+					if(isset($arr_json['results'][0]['geometry']) && $arr_json['results'][0]['geometry'])
 					{
-						$lat = str_replace(',', '.', $json['results'][0]['geometry']['location']['lat']);
-						$lng = str_replace(',', '.',$json['results'][0]['geometry']['location']['lng']);
+						$lat = str_replace(',', '.', $arr_json['results'][0]['geometry']['location']['lat']);
+						$lng = str_replace(',', '.',$arr_json['results'][0]['geometry']['location']['lng']);
 
 						$out = "(".$lat.", ".$lng.")";
 					}
