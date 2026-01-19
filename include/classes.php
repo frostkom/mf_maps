@@ -27,7 +27,7 @@ class mf_maps
 		));
 
 		$out = "<div".parse_block_attributes(array('class' => "widget maps_map", 'attributes' => $attributes)).">
-			<div class='map_container' tabindex='0'></div>";
+			<div class='map_container' tabindex='0' data-latitude='".$attributes['maps_latitude']."' data-longitude='".$attributes['maps_longitude']."'></div>";
 
 			/*$out .= "<div class='map_search mf_form'>"
 				.show_textfield(array('placeholder' => __("Search for property or address", 'lang_maps')))
@@ -82,9 +82,10 @@ class mf_maps
 		{
 			$arr_settings['setting_maps_type'] = __("Design", 'lang_maps');
 			$arr_settings['setting_maps_controls'] = __("Display Controls", 'lang_maps');
-			$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
 			$arr_settings['setting_profile_map'] = __("Display Map in Profile", 'lang_maps');
 		}
+
+		$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 	}
@@ -101,7 +102,7 @@ class mf_maps
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key);
 
-		$suffix = ($option == '' ? "<a href='//developers.google.com/maps/documentation/javascript/get-api-key'>".__("Get yours here", 'lang_maps')."</a>" : "");
+		$suffix = ($option == '' ? "<a href='//developers.google.com/maps/get-started'>".__("Get yours here", 'lang_maps')."</a>" : "");
 
 		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'suffix' => $suffix));
 	}
@@ -141,9 +142,27 @@ class mf_maps
 	function setting_maps_default_position_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option($setting_key, '(55.6133308, 12.976285800000028)');
 
-		echo apply_filters('get_map', '', array('input' => '', 'coordinates_name' => $setting_key, 'coordinates' => $option));
+		if(get_option('setting_gmaps_api') != '')
+		{
+			$option = get_option($setting_key, "(55.6133308, 12.976285800000028)");
+
+			echo apply_filters('get_map', '', array('input' => '', 'coordinates_name' => $setting_key, 'coordinates' => $option));
+		}
+
+		else
+		{
+			$option = get_option($setting_key, "(411964, 6175590)");
+
+			$option = trim($option, "(");
+			$option = trim($option, ")");
+
+			list($maps_latitude, $maps_longitude) = explode(", ", $option);
+
+			echo $this->block_render_map_callback(['maps_latitude' => $maps_latitude, 'maps_longitude' => $maps_longitude]);
+		}
+
+		echo show_textfield(array('name' => $setting_key, 'value' => $option));
 	}
 
 	function setting_profile_map_callback()
@@ -182,6 +201,20 @@ class mf_maps
 			update_user_meta($user_id, 'meta_search_input', $profile_search_input);
 			update_user_meta($user_id, 'meta_search_coords', $profile_search_coordinates);
 		}
+	}
+
+	function shortcode_maps()
+	{
+		$setting_maps_default_position = get_option_or_default('setting_maps_default_position', "(411964, 6175590)");
+
+		$setting_maps_default_position = trim($setting_maps_default_position, "(");
+		$setting_maps_default_position = trim($setting_maps_default_position, ")");
+
+		list($maps_latitude, $maps_longitude) = explode(", ", $setting_maps_default_position);
+
+		$out = $this->block_render_map_callback(['maps_latitude' => $maps_latitude, 'maps_longitude' => $maps_longitude]);
+
+		return $out;
 	}
 
 	function init_maps()
