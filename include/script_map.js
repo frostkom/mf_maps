@@ -1,10 +1,8 @@
-// Transform Google lat/lon to EPSG:3006
 function toMapCoord(lat, lon)
 {
     return ol.proj.fromLonLat([lon, lat], 'EPSG:3006');
 }
 
-// Transform map coord back to Google lat/lon
 function fromMapCoord(mapCoord)
 {
     return ol.proj.toLonLat(mapCoord, 'EPSG:3006');
@@ -21,18 +19,15 @@ function add_marker(data)
         data.pos = toMapCoord(lat, lon);
     }
 
-    // Create feature and store info data
     let mapPoint = new ol.geom.Point(data.pos);
     let feature = new ol.Feature({
         geometry: mapPoint
     });
-    
-    // Store your marker data for popup
+
     feature.set('name', data.name || 'Marker');
     feature.set('text', data.text || 'No description');
     /*feature.set('info', data.info || 'Click for details');*/
 
-    // Create reusable source for all markers (add once)
     if(typeof markerSource === 'undefined')
 	{
         markerSource = new ol.source.Vector();
@@ -49,18 +44,18 @@ function add_marker(data)
         map.addLayer(markerLayer);
     }
 
-    // Add feature to source
     markerSource.addFeature(feature);
 }
 
 function zoom_to_markers()
 {
-    const extent = markerSource.getExtent();
+	const extent = markerSource.getExtent();
 
-    map.getView().fit(extent,
+	map.getView().fit(extent,
 	{
-        duration: 1000
-    });
+		duration: 1000,
+		maxZoom: 10
+	});
 }
 
 proj4.defs(

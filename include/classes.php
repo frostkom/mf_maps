@@ -36,8 +36,9 @@ class mf_maps
 				</ul>"
 			."</div>";*/
 
-			$out .= "<div class='map_info mf_form'></div>
-			<div class='map_marker_dialog'>
+			//$out .= "<div class='map_info mf_form'></div>";
+
+			$out .= "<div class='map_marker_dialog'>
 				<a href='#'></a>
 				<div></div>
 			</div>
