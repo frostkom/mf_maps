@@ -37,6 +37,10 @@ class mf_maps
 			."</div>";*/
 
 			$out .= "<div class='map_info mf_form'></div>
+			<div class='map_marker_dialog'>
+				<a href='#'></a>
+				<div></div>
+			</div>
 		</div>";
 
 		return $out;
@@ -157,7 +161,15 @@ class mf_maps
 			$option = trim($option, "(");
 			$option = trim($option, ")");
 
-			list($maps_latitude, $maps_longitude) = explode(", ", $option);
+			if(strpos($option, ", "))
+			{
+				list($maps_latitude, $maps_longitude) = explode(", ", $option);
+			}
+
+			else
+			{
+				$maps_latitude = $maps_longitude = "";
+			}
 
 			echo $this->block_render_map_callback(['maps_latitude' => $maps_latitude, 'maps_longitude' => $maps_longitude]);
 		}
@@ -228,11 +240,10 @@ class mf_maps
 			$setting_maps_default_position = get_option_or_default('setting_maps_default_position', "(55.6133308, 12.976285800000028)");
 
 			$plugin_include_url = plugin_dir_url(__FILE__);
-			$plugin_version = get_plugin_version(__FILE__);
 
 			mf_enqueue_style('style_maps', $plugin_include_url."style.css");
-			wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api, array(), $plugin_version);
-			mf_enqueue_script('script_maps', $plugin_include_url."script.js", array(
+			wp_enqueue_script('script_gmaps_api', "//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=".$setting_gmaps_api);
+			mf_enqueue_script('script_maps_gmaps', $plugin_include_url."script_gmaps.js", array(
 				'plugins_url' => plugins_url(),
 				'type' => $setting_maps_type,
 				'display_fullscreen' => in_array('fullscreen', $setting_maps_controls),

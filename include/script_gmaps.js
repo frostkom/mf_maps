@@ -127,45 +127,32 @@ function add_marker(data)
 		};
 	}
 
-	/*if(data.id && data.id == '' || is_location_free(data.id))
+	var marker = new google.maps.Marker(marker_data);
+
+	if(data.name != '')
 	{
-		if(data.id && data.id != '')
+		var infowindow = new google.maps.InfoWindow(
 		{
-			lookup.push(data.id);
-		}*/
+			content: "<div class='marker_content'>"
+				+ (data.name != '' ? "<h3>" + data.name + "</h3>" : "")
+				+ (data.text != '' ? "<p>" + data.text + "</p>" : "")
+			+ "</div>"
+		});
 
-		var marker = new google.maps.Marker(marker_data);
-
-		if(data.name != '')
+		google.maps.event.addListener(marker, 'click', function()
 		{
-			var infowindow = new google.maps.InfoWindow(
+			for(var i = 0; i < arr_infowindows.length; i++)
 			{
-				content: "<div class='marker_content'>"
-					+ (data.name != '' ? "<h3>" + data.name + "</h3>" : "")
-					+ (data.text != '' ? "<p>" + data.text + "</p>" : "")
-				+ "</div>"
-			});
+				arr_infowindows[i].close();
+			}
 
-			google.maps.event.addListener(marker, 'click', function()
-			{
-				for(var i = 0; i < arr_infowindows.length; i++)
-				{
-					arr_infowindows[i].close();
-				}
+			arr_infowindows.push(infowindow);
 
-				arr_infowindows.push(infowindow);
+			infowindow.open(map_object, marker);
+		});
+	}
 
-				infowindow.open(map_object, marker);
-			});
-
-			/*if(typeof webshop_marker_event === 'function')
-			{
-				webshop_marker_event(data, map_object, marker);
-			}*/
-		}
-
-		markers.push(marker);
-	/*}*/
+	markers.push(marker);
 }
 
 function set_center(position)
