@@ -28,7 +28,7 @@ function add_marker(data)
     feature.set('text', data.text || 'No description');
     /*feature.set('info', data.info || 'Click for details');*/
 
-    if(typeof markerSource === 'undefined')
+	if(typeof markerSource === 'undefined')
 	{
         markerSource = new ol.source.Vector();
         markerLayer = new ol.layer.Vector({
@@ -149,12 +149,12 @@ var map = new ol.Map(
 	});
 }*/
 
-/*map.on('moveend', () => {
+map.on('moveend', () => {
 	var view = map.getView(),
 		center = view.getCenter(),
 		zoom = view.getZoom();
 
-	$.ajax(
+	/*$.ajax(
 	{
 		url: script_maps_map.ajax_url,
 		type: 'post',
@@ -166,10 +166,10 @@ var map = new ol.Map(
 			zoom: zoom,
 		},
 		success(data){}
-	});
+	});*/
 
 	console.log("Moved to: " , zoom , center);
-});*/
+});
 
 var dom_obj_container = document.querySelector(".widget.maps_map"),
 	dom_obj_popup = dom_obj_container.querySelector(".map_marker_dialog"),
@@ -207,7 +207,7 @@ map.on('singleclick', function(evt)
 		const text = feature.get('text');
 
 		dom_obj_popup.querySelector("div").innerHTML = "<h4>" + name + "</h4><p>" + text + "</p>"; /*<small>Position: " + coordinates + "</small>*/
-		
+
 		popupOverlay.setPosition(coordinates);
 	}
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-31 09:16+0100\n"
+"POT-Creation-Date: 2026-03-25 07:15+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,79 +15,96 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/functions.php:12
-msgid "Search for an address and find its position"
-msgstr "Sök efter en adress och hitta dess position"
-
-#: ../include/functions.php:25
-msgid "API Key"
-msgstr "API-nyckel"
-
-#: ../include/functions.php:29
-msgid "Design"
-msgstr "Utseende"
-
-#: ../include/functions.php:30
-msgid "Display Controls"
-msgstr "Visa kontroller"
-
-#: ../include/functions.php:31
-msgid "Default Position"
-msgstr "Standardposition"
-
-#: ../include/functions.php:32
-msgid "Display Map in Profile"
-msgstr "Visa karta i profilen"
-
-#: ../include/functions.php:42
-msgid "Maps"
+#: ../include/classes.php:58
+msgid "Map"
 msgstr "Karta"
 
-#: ../include/functions.php:52
-msgid "Get yours here"
-msgstr "Hämta din här"
+#: ../include/classes.php:59
+msgid "Display a Map"
+msgstr "Visa en karta"
 
-#: ../include/functions.php:65
-msgid "Roadmap"
-msgstr "Gator"
+#: ../include/classes.php:60
+msgid "Latitude"
+msgstr "Latitud"
 
-#: ../include/functions.php:66
-msgid "Satellite"
-msgstr "Satellit"
+#: ../include/classes.php:61
+msgid "Longitude"
+msgstr "Longitud"
 
-#: ../include/functions.php:67
-msgid "Hybrid"
-msgstr ""
-
-#: ../include/functions.php:68
-msgid "Terrain"
-msgstr "Terräng"
-
-#: ../include/functions.php:69
-msgid "Custom"
-msgstr "Anpassad"
-
-#: ../include/functions.php:81
-msgid "Search"
-msgstr "Sök"
-
-#: ../include/functions.php:82
-msgid "Fullscreen"
-msgstr "Fullskärm"
-
-#: ../include/functions.php:83
-msgid "Street View"
-msgstr "Gatuvy"
-
-#: ../include/functions.php:84
+#: ../include/classes.php:62
+#: ../include/classes.php:140
 msgid "Zoom"
 msgstr ""
 
-#: ../include/functions.php:85
+#: ../include/classes.php:84
+msgid "API Key"
+msgstr "API-nyckel"
+
+#: ../include/classes.php:88
+msgid "Design"
+msgstr "Utseende"
+
+#: ../include/classes.php:89
+msgid "Display Controls"
+msgstr "Visa kontroller"
+
+#: ../include/classes.php:90
+msgid "Display Map in Profile"
+msgstr "Visa karta i profilen"
+
+#: ../include/classes.php:93
+msgid "Default Position"
+msgstr "Standardposition"
+
+#: ../include/classes.php:102
+msgid "Maps"
+msgstr "Karta"
+
+#: ../include/classes.php:110
+msgid "Get yours here"
+msgstr "Hämta din här"
+
+#: ../include/classes.php:121
+msgid "Roadmap"
+msgstr "Gator"
+
+#: ../include/classes.php:122
+msgid "Satellite"
+msgstr "Satellit"
+
+#: ../include/classes.php:123
+msgid "Hybrid"
+msgstr ""
+
+#: ../include/classes.php:124
+msgid "Terrain"
+msgstr "Terräng"
+
+#: ../include/classes.php:125
+msgid "Custom"
+msgstr "Anpassad"
+
+#: ../include/classes.php:137
+msgid "Search"
+msgstr "Sök"
+
+#: ../include/classes.php:138
+msgid "Fullscreen"
+msgstr "Fullskärm"
+
+#: ../include/classes.php:139
+msgid "Street View"
+msgstr "Gatuvy"
+
+#: ../include/classes.php:141
 msgid "Scale"
 msgstr "Skala"
 
-#: ../include/functions.php:116
+#: ../include/classes.php:198
 msgid "City"
 msgstr "Din adress"
+
+#: ../include/classes.php:271
+msgid "Search for an address and find its position"
+msgstr "Sök efter en adress och hitta dess position"
 
