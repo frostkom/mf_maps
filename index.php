@@ -3,7 +3,7 @@
 Plugin Name: MF Maps
 Plugin URI: https://github.com/frostkom/mf_maps
 Description: Add support for Maps (Google and OSM)
-Version: 2.7.13
+Version: 2.7.14
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
