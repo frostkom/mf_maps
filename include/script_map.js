@@ -77,7 +77,14 @@ mapLayers = [
 		title: 'OpenStreetMap',
 		type: 'base',
 		visible: true,
-		source: new ol.source.OSM()
+		source: new ol.source.XYZ({
+			url: 'https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=' + script_maps_map.maptiler_api_key,
+			attributions: '© OpenStreetMap contributors © MapTiler'
+		})
+		/*source: new ol.source.XYZ({
+			url: 'https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png?api_key=YOUR_KEY',
+			attributions: '© Stadia Maps © OpenStreetMap contributors'
+		})*/
 	})
 ];
 

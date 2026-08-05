@@ -22,6 +22,7 @@ class mf_maps
 		//wp_enqueue_script('script_openlayers_switcher', "//cdn.jsdelivr.net/npm/ol-layerswitcher@latest/dist/ol-layerswitcher.js");
 		wp_enqueue_script('script_proj4js', "//cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js");
 		mf_enqueue_script('script_maps_map', $plugin_include_url."script_map.js", array(
+			'maptiler_api_key' => get_option('setting_maps_maptiler_api_key'),
 			'center' => array((int)$attributes['maps_latitude'], (int)$attributes['maps_longitude']),
 			'zoom' => $attributes['maps_zoom'],
 		));
@@ -81,15 +82,16 @@ class mf_maps
 		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 		$arr_settings = array();
-		$arr_settings['setting_gmaps_api'] = __("API Key", 'lang_maps');
+		$arr_settings['setting_gmaps_api'] = __("API Key", 'lang_maps')." (Google)";
 
 		if(get_option('setting_gmaps_api') != '')
 		{
-			$arr_settings['setting_maps_type'] = __("Design", 'lang_maps');
-			$arr_settings['setting_maps_controls'] = __("Display Controls", 'lang_maps');
-			$arr_settings['setting_profile_map'] = __("Display Map in Profile", 'lang_maps');
+			$arr_settings['setting_maps_type'] = " - ".__("Design", 'lang_maps');
+			$arr_settings['setting_maps_controls'] = " - ".__("Display Controls", 'lang_maps');
+			$arr_settings['setting_profile_map'] = " - ".__("Display Map in Profile", 'lang_maps');
 		}
 
+		$arr_settings['setting_maps_maptiler_api_key'] = __("API Key", 'lang_maps')." (MapTiler)";
 		$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
@@ -108,6 +110,16 @@ class mf_maps
 		$option = get_option($setting_key);
 
 		$suffix = ($option == '' ? "<a href='//developers.google.com/maps/get-started'>".__("Get yours here", 'lang_maps')."</a>" : "");
+
+		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'suffix' => $suffix));
+	}
+
+	function setting_maps_maptiler_api_key_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key);
+
+		$suffix = ($option == '' ? "<a href='https://www.maptiler.com/'>".__("Get yours here", 'lang_maps')."</a>" : "");
 
 		echo show_textfield(array('name' => $setting_key, 'value' => $option, 'suffix' => $suffix));
 	}
