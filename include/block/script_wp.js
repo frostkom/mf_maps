@@ -3,6 +3,7 @@
 	var el = wp.element.createElement,
 		registerBlockType = wp.blocks.registerBlockType,
 		TextControl = wp.components.TextControl,
+		PanelBody = wp.components.PanelBody,
 		InspectorControls = wp.blockEditor.InspectorControls;
 
 	registerBlockType('mf/maps',
@@ -69,42 +70,46 @@
 				[
 					el(
 						InspectorControls,
-						'div',
+						{key: 'inspector'},
 						el(
-							TextControl,
-							{
-								label: script_maps_block_wp.maps_latitude_label,
-								type: 'text',
-								value: props.attributes.maps_latitude,
-								onChange: function(value)
+							PanelBody,
+							{title: script_maps_block_wp.block_title, initialOpen: true},
+							el(
+								TextControl,
 								{
-									props.setAttributes({maps_latitude: value});
+									label: script_maps_block_wp.maps_latitude_label,
+									type: 'text',
+									value: props.attributes.maps_latitude,
+									onChange: function(value)
+									{
+										props.setAttributes({maps_latitude: value});
+									}
 								}
-							}
-						),
-						el(
-							TextControl,
-							{
-								label: script_maps_block_wp.maps_longitude_label,
-								type: 'text',
-								value: props.attributes.maps_longitude,
-								onChange: function(value)
+							),
+							el(
+								TextControl,
 								{
-									props.setAttributes({maps_longitude: value});
+									label: script_maps_block_wp.maps_longitude_label,
+									type: 'text',
+									value: props.attributes.maps_longitude,
+									onChange: function(value)
+									{
+										props.setAttributes({maps_longitude: value});
+									}
 								}
-							}
-						),
-						el(
-							TextControl,
-							{
-								label: script_maps_block_wp.maps_zoom_label,
-								type: 'text',
-								value: props.attributes.maps_zoom,
-								onChange: function(value)
+							),
+							el(
+								TextControl,
 								{
-									props.setAttributes({maps_zoom: value});
+									label: script_maps_block_wp.maps_zoom_label,
+									type: 'text',
+									value: props.attributes.maps_zoom,
+									onChange: function(value)
+									{
+										props.setAttributes({maps_zoom: value});
+									}
 								}
-							}
+							)
 						)
 					),
 					el(

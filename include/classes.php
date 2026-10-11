@@ -92,7 +92,11 @@ class mf_maps
 		}
 
 		$arr_settings['setting_maps_maptiler_api_key'] = __("API Key", 'lang_maps')." (MapTiler)";
-		$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
+
+		if(get_option('setting_gmaps_api') != '' || get_option('setting_maps_maptiler_api_key') != '')
+		{
+			$arr_settings['setting_maps_default_position'] = __("Default Position", 'lang_maps');
+		}
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 	}
